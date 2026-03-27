@@ -3,7 +3,7 @@ import { getAuth } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyB3k_mElPbAU4gBJIRVvkpzGr9FBR1KWQo',
+  apiKey: 'AIzaSyD7AlDdOHeLAxGFxWTqpfJfn_TKZ6RTYew',
   authDomain: 'taskflow-dashboard-777.firebaseapp.com',
   projectId: 'taskflow-dashboard-777',
   storageBucket: 'taskflow-dashboard-777.firebasestorage.app',
