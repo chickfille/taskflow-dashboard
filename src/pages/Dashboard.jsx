@@ -11,16 +11,24 @@ import {
   query,
   serverTimestamp,
   updateDoc,
+  where,
 } from 'firebase/firestore'
 import { auth, db } from '../services/firebase'
 
 function Dashboard() {
   const navigate = useNavigate()
+  const user = auth.currentUser
   const [taskTitle, setTaskTitle] = useState('')
   const [tasks, setTasks] = useState([])
 
   useEffect(() => {
-    const q = query(collection(db, 'tasks'), orderBy('createdAt', 'desc'))
+    if (!user) return
+
+    const q = query(
+      collection(db, 'tasks'),
+      where('userId', '==', user.uid),
+      orderBy('createdAt', 'desc')
+    )
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const taskData = snapshot.docs.map((docItem) => ({
@@ -31,7 +39,7 @@ function Dashboard() {
     })
 
     return () => unsubscribe()
-  }, [])
+  }, [user])
 
   const handleLogout = async () => {
     try {
@@ -43,12 +51,13 @@ function Dashboard() {
   }
 
   const handleAddTask = async () => {
-    if (!taskTitle.trim()) return
+    if (!taskTitle.trim() || !user) return
 
     try {
       await addDoc(collection(db, 'tasks'), {
         title: taskTitle,
         completed: false,
+        userId: user.uid,
         createdAt: serverTimestamp(),
       })
       setTaskTitle('')
@@ -124,12 +133,13 @@ function Dashboard() {
             <input
               value={taskTitle}
               onChange={(e) => setTaskTitle(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleAddTask()}
               placeholder="Enter a task..."
               className="flex-1 rounded-xl bg-zinc-800 px-4 py-3 text-white outline-none"
             />
             <button
               onClick={handleAddTask}
-              className="rounded-xl bg-white px-5 py-3 font-medium text-black"
+              className="rounded-xl bg-white px-5 py-3 font-medium text-black transition hover:scale-105"
             >
               Add
             </button>
@@ -146,7 +156,7 @@ function Dashboard() {
               tasks.map((task) => (
                 <div
                   key={task.id}
-                  className="flex items-center justify-between gap-4 rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3"
+                  className="flex items-center justify-between gap-4 rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 transition hover:bg-zinc-900"
                 >
                   <div>
                     <p
