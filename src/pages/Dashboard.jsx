@@ -88,108 +88,170 @@ function Dashboard() {
   const pendingCount = tasks.filter((task) => !task.completed).length
 
   return (
-    <div className="min-h-screen bg-zinc-950 p-8 text-white">
-      <div className="mx-auto max-w-5xl">
-        <div className="mb-8 flex items-start justify-between gap-4">
-          <div>
-            <p className="text-sm uppercase tracking-[0.25em] text-zinc-500">
-              TaskFlow Dashboard
-            </p>
-            <h1 className="mt-2 text-4xl font-bold">Welcome back</h1>
-            <p className="mt-2 text-zinc-400">
-              Your authenticated dashboard is live with Firebase and Firestore.
-            </p>
-          </div>
+    <div className="min-h-screen bg-[#09090b] text-white">
+      <div className="mx-auto max-w-7xl px-6 py-8">
+        <div className="grid gap-8 xl:grid-cols-[280px_minmax(0,1fr)]">
+          <aside className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+            <div>
+              <p className="text-xs uppercase tracking-[0.35em] text-zinc-500">
+                TaskFlow
+              </p>
+              <h1 className="mt-3 text-2xl font-semibold text-white">Dashboard</h1>
+              <p className="mt-2 text-sm text-zinc-400">
+                Manage your tasks in one clean workspace.
+              </p>
+            </div>
 
-          <button
-            onClick={handleLogout}
-            className="rounded-xl border border-zinc-800 px-4 py-2 text-sm text-white hover:bg-zinc-900"
-          >
-            Logout
-          </button>
-        </div>
+            <div className="mt-8 rounded-2xl border border-white/10 bg-black/20 p-4">
+              <p className="text-xs uppercase tracking-[0.25em] text-zinc-500">
+                Signed in as
+              </p>
+              <p className="mt-2 break-all text-sm text-zinc-200">
+                {user?.email || 'Unknown user'}
+              </p>
+            </div>
 
-        <div className="grid gap-6 md:grid-cols-3">
-          <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
-            <p className="text-sm text-zinc-400">Tasks</p>
-            <h2 className="mt-2 text-3xl font-semibold">{tasks.length}</h2>
-          </div>
+            <div className="mt-8 space-y-3">
+              <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                <p className="text-sm text-zinc-400">Total tasks</p>
+                <p className="mt-1 text-2xl font-semibold text-white">{tasks.length}</p>
+              </div>
 
-          <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
-            <p className="text-sm text-zinc-400">Completed</p>
-            <h2 className="mt-2 text-3xl font-semibold">{completedCount}</h2>
-          </div>
+              <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                <p className="text-sm text-zinc-400">Completed</p>
+                <p className="mt-1 text-2xl font-semibold text-white">{completedCount}</p>
+              </div>
 
-          <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
-            <p className="text-sm text-zinc-400">Pending</p>
-            <h2 className="mt-2 text-3xl font-semibold">{pendingCount}</h2>
-          </div>
-        </div>
+              <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                <p className="text-sm text-zinc-400">Pending</p>
+                <p className="mt-1 text-2xl font-semibold text-white">{pendingCount}</p>
+              </div>
+            </div>
 
-        <div className="mt-8 rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
-          <h3 className="text-xl font-semibold">Add Task</h3>
-
-          <div className="mt-4 flex gap-3">
-            <input
-              value={taskTitle}
-              onChange={(e) => setTaskTitle(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleAddTask()}
-              placeholder="Enter a task..."
-              className="flex-1 rounded-xl bg-zinc-800 px-4 py-3 text-white outline-none"
-            />
             <button
-              onClick={handleAddTask}
-              className="rounded-xl bg-white px-5 py-3 font-medium text-black transition hover:scale-105"
+              onClick={handleLogout}
+              className="mt-8 w-full rounded-2xl border border-white/10 px-4 py-3 text-sm font-medium text-white transition hover:bg-white/5"
             >
-              Add
+              Logout
             </button>
-          </div>
-        </div>
+          </aside>
 
-        <div className="mt-8 rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
-          <h3 className="text-xl font-semibold">Your Tasks</h3>
+          <main className="space-y-8">
+            <section className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+              <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+                <div>
+                  <p className="text-sm uppercase tracking-[0.3em] text-zinc-500">
+                    Overview
+                  </p>
+                  <h2 className="mt-3 text-3xl font-semibold text-white">
+                    Welcome back
+                  </h2>
+                  <p className="mt-2 max-w-2xl text-zinc-400">
+                    Create, manage, and complete your tasks with a cleaner
+                    full-stack dashboard experience.
+                  </p>
+                </div>
 
-          <div className="mt-4 space-y-3">
-            {tasks.length === 0 ? (
-              <p className="text-zinc-400">No tasks yet.</p>
-            ) : (
-              tasks.map((task) => (
-                <div
-                  key={task.id}
-                  className="flex items-center justify-between gap-4 rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 transition hover:bg-zinc-900"
-                >
-                  <div>
-                    <p
-                      className={`font-medium ${
-                        task.completed ? 'text-zinc-500 line-through' : 'text-white'
-                      }`}
-                    >
-                      {task.title}
-                    </p>
-                    <p className="mt-1 text-sm text-zinc-500">
-                      {task.completed ? 'Completed' : 'Pending'}
-                    </p>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                  <div className="rounded-2xl border border-white/10 bg-black/20 px-5 py-4">
+                    <p className="text-sm text-zinc-400">Tasks</p>
+                    <p className="mt-2 text-2xl font-semibold">{tasks.length}</p>
                   </div>
-
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => toggleTaskComplete(task.id, task.completed)}
-                      className="rounded-lg border border-zinc-700 px-3 py-2 text-sm hover:bg-zinc-800"
-                    >
-                      {task.completed ? 'Undo' : 'Complete'}
-                    </button>
-
-                    <button
-                      onClick={() => handleDeleteTask(task.id)}
-                      className="rounded-lg bg-red-500 px-3 py-2 text-sm text-white hover:opacity-90"
-                    >
-                      Delete
-                    </button>
+                  <div className="rounded-2xl border border-white/10 bg-black/20 px-5 py-4">
+                    <p className="text-sm text-zinc-400">Completed</p>
+                    <p className="mt-2 text-2xl font-semibold">{completedCount}</p>
+                  </div>
+                  <div className="rounded-2xl border border-white/10 bg-black/20 px-5 py-4">
+                    <p className="text-sm text-zinc-400">Pending</p>
+                    <p className="mt-2 text-2xl font-semibold">{pendingCount}</p>
                   </div>
                 </div>
-              ))
-            )}
-          </div>
+              </div>
+            </section>
+
+            <section className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+              <div className="flex flex-col gap-4 lg:flex-row">
+                <input
+                  value={taskTitle}
+                  onChange={(e) => setTaskTitle(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleAddTask()}
+                  placeholder="Enter a new task..."
+                  className="flex-1 rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition placeholder:text-zinc-500 focus:border-white/25"
+                />
+
+                <button
+                  onClick={handleAddTask}
+                  className="rounded-2xl bg-white px-6 py-3 font-medium text-black transition hover:scale-[1.01] hover:opacity-95"
+                >
+                  Add task
+                </button>
+              </div>
+            </section>
+
+            <section className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm uppercase tracking-[0.25em] text-zinc-500">
+                    Task list
+                  </p>
+                  <h3 className="mt-2 text-2xl font-semibold text-white">
+                    Your tasks
+                  </h3>
+                </div>
+              </div>
+
+              <div className="mt-6 space-y-4">
+                {tasks.length === 0 ? (
+                  <div className="rounded-2xl border border-dashed border-white/10 bg-black/20 px-6 py-10 text-center">
+                    <p className="text-lg font-medium text-white">No tasks yet</p>
+                    <p className="mt-2 text-sm text-zinc-400">
+                      Add your first task to start using the dashboard.
+                    </p>
+                  </div>
+                ) : (
+                  tasks.map((task) => (
+                    <div
+                      key={task.id}
+                      className="flex flex-col gap-4 rounded-2xl border border-white/10 bg-black/20 p-5 transition hover:bg-white/[0.04] lg:flex-row lg:items-center lg:justify-between"
+                    >
+                      <div className="min-w-0">
+                        <p
+                          className={`truncate text-base font-medium ${
+                            task.completed
+                              ? 'text-zinc-500 line-through'
+                              : 'text-white'
+                          }`}
+                        >
+                          {task.title}
+                        </p>
+                        <p className="mt-2 text-sm text-zinc-500">
+                          {task.completed ? 'Completed' : 'Pending'}
+                        </p>
+                      </div>
+
+                      <div className="flex flex-wrap gap-2">
+                        <button
+                          onClick={() =>
+                            toggleTaskComplete(task.id, task.completed)
+                          }
+                          className="rounded-xl border border-white/10 px-4 py-2 text-sm text-white transition hover:bg-white/5"
+                        >
+                          {task.completed ? 'Undo' : 'Complete'}
+                        </button>
+
+                        <button
+                          onClick={() => handleDeleteTask(task.id)}
+                          className="rounded-xl bg-red-500 px-4 py-2 text-sm font-medium text-white transition hover:opacity-90"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </section>
+          </main>
         </div>
       </div>
     </div>
